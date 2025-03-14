@@ -48,10 +48,11 @@ public class FlightController {
         }
     }
 
-//    @GetMapping("/{id}/schedules")
-//    ResponseEntity<FlightInfo> getFlightSchedules(@PathVariable String id, @RequestParam(required = false)Optional<String> dates) {
-//
-//    }
+    @GetMapping("/{id}/schedules")
+    ResponseEntity<Object> getFlightSchedules(@PathVariable String id, @RequestParam(required = false) String dates) {
+        Object schedules = flightService.getFlightSchedules(id, dates);
+        return ResponseEntity.ok(schedules);
+    }
 
     @DeleteMapping("/{id}")
     ResponseEntity<FlightInfo> deleteFlightById(@PathVariable String id) {

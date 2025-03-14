@@ -16,9 +16,16 @@ public class ScheduleController {
     @Autowired
     ScheduleService scheduleService;
 
-    @GetMapping("/flights/{flightId}")
-    ResponseEntity<List<ScheduleInfo>> getSchedulesForFlight(@PathVariable String flightId) {
+    @GetMapping()
+    ResponseEntity<List<ScheduleInfo>> getSchedulesForFlight(@RequestParam(required = false) String flightId, @RequestParam(required = false) String dates) {
         List<ScheduleInfo> scheduleInfoList = scheduleService.getSchedulesByFlightId(flightId);
+
+        if (dates != null) {
+            scheduleInfoList = scheduleInfoList.stream()
+                    .filter(scheduleInfo -> scheduleInfo.getDate().toString().startsWith(dates))
+                    .collect(Collectors.toList());
+        }
+
         if (scheduleInfoList.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -29,11 +36,6 @@ public class ScheduleController {
     ScheduleInfo CreateFlight(@RequestBody ScheduleInfo scheduleInfo) {
         return scheduleService.createSchedule(scheduleInfo);
     }
-
-//    @GetMapping("/{id}/schedules")
-//    ResponseEntity<ScheduleInfo> getFlightSchedules(@PathVariable String id, @RequestParam(required = false)Optional<String> dates) {
-//
-//    }
 
     @DeleteMapping("/{id}")
     ResponseEntity<ScheduleInfo> deleteFlightById(@PathVariable String id) {

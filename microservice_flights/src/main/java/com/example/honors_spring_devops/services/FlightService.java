@@ -3,7 +3,9 @@ package com.example.honors_spring_devops.services;
 import com.example.honors_spring_devops.dto.FlightInfo;
 import com.example.honors_spring_devops.repository.FlightInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -12,6 +14,8 @@ import java.util.List;
 public class FlightService {
     @Autowired
     FlightInfoRepository flightInfoRepository;
+    @Autowired
+    private RestTemplate restTemplate;
 
     public List<FlightInfo> getAllFlights() {
         return flightInfoRepository.getAllFlights();
@@ -39,5 +43,16 @@ public class FlightService {
         else {
             throw new Exception("Flight does not exist");
         }
+    }
+
+    public Object getFlightSchedules(String flightId, String dates) {
+        String scheduleServiceUrl = "http://localhost:5001//schedules?flightId=" + flightId;
+
+        if (dates != null) {
+            scheduleServiceUrl += "&dates=" + dates;
+        }
+
+        ResponseEntity<Object> response = restTemplate.getForEntity(scheduleServiceUrl, Object.class);
+        return response.getBody();
     }
 }

@@ -57,6 +57,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>microservice_schedules</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

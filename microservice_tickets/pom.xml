@@ -57,6 +57,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>microservice_tickets</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
